@@ -1,17 +1,75 @@
-function seed() {}
+function seed() {
+  return Array.from(arguments);
+}
 
-function same([x, y], [j, k]) {}
+function same([x, y], [j, k]) {
+  return arguments[0][0] === arguments[1][0] && arguments[0][1] === arguments[1][1];
+}
 
 // The game state to search for `cell` is passed as the `this` value of the function.
-function contains(cell) {}
+function contains(cell) {
+  for (let i=0; i<this.length; i++) {
+    if(this[i][0] === cell[0] && this[i][1] === cell[1])
+      return true;
+  }
+  return false;
+}
 
-const printCell = (cell, state) => {};
+const printCell = (cell, state) => {
+  return contains.call(state, cell) ? "\u25A3" : "\u25A2";
+};
 
-const corners = (state = []) => {};
+const corners = (state = []) => {
+  let corners = {
+    topRight: [0,0],
+    bottomLeft: [0,0]
+  };
+  
+  if (state.length) {
+    let xAxis = [];
+    let yAxis = [];
 
-const printCells = (state) => {};
+    state.forEach(element => {
+      let [x,y] = element;
+      xAxis.push(x);
+      yAxis.push(y);
+    });
+    let minX = Math.min(...xAxis);
+    let maxX = Math.max(...xAxis);
+    let minY = Math.min(...yAxis);
+    let maxY = Math.max(...yAxis);
 
-const getNeighborsOf = ([x, y]) => {};
+    corners.topRight = [maxX, maxY];
+    corners.bottomLeft = [minX, minY];
+  }
+  
+  return corners;
+};
+
+const printCells = (state) => {
+  let printed = "";
+  const limits = corners(state);
+  let [maxX, maxY] = limits.topRight;
+  let [minX, minY] = limits.bottomLeft;
+
+  for(let j=maxY; j>=minY; j--){
+    let row = [];
+
+    for(let i=minX; i<=maxX; i++){
+      row.push(printCell([i, j], state));
+    }
+    printed += row.join(" ") + "\n";
+  }
+
+  return printed;
+};
+
+const getNeighborsOf = ([x, y]) => {
+  return [
+    [x-1, y+1], [x, y+1], [x+1, y+1], [x-1, y],
+    [x+1, y], [x-1, y-1], [x, y-1], [x+1, y-1]
+  ];
+};
 
 const getLivingNeighbors = (cell, state) => {};
 
