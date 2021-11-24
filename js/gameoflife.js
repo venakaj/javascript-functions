@@ -80,7 +80,24 @@ const willBeAlive = (cell, state) => {
   return aliveNeighbors.length === 3 || (contains.call(state, cell) && aliveNeighbors.length === 2);
 };
 
-const calculateNext = (state) => {};
+const calculateNext = (state) => {
+  const limits = corners(state);
+  let minX = limits.bottomLeft[0] - 1;
+  let maxX = limits.topRight[0] + 1;
+  let minY = limits.bottomLeft[1] - 1;
+  let maxY = limits.topRight[1] + 1;
+  let futureState = [];
+
+  for(let j=maxY; j>=minY; j--){
+    for(let i=minX; i<=maxX; i++){
+      if(willBeAlive([i, j], state)){
+        futureState.push([i, j]);
+      }  
+    }
+  }
+
+  return futureState;
+};
 
 const iterate = (state, iterations) => {};
 
