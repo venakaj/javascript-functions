@@ -99,7 +99,17 @@ const calculateNext = (state) => {
   return futureState;
 };
 
-const iterate = (state, iterations) => {};
+const iterate = (state, iterations) => {
+  let gameStates = [state];
+  let previousState = state;
+
+  for(let i=0; i<iterations; i++){
+    previousState = calculateNext(previousState);
+    gameStates.push(previousState);
+  }
+
+  return gameStates;
+};
 
 const main = (pattern, iterations) => {};
 
