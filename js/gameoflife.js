@@ -111,7 +111,10 @@ const iterate = (state, iterations) => {
   return gameStates;
 };
 
-const main = (pattern, iterations) => {};
+const main = (pattern, iterations) => {
+  let gameStates = iterate(startPatterns[pattern], iterations);
+  gameStates.forEach(gameState => console.log(printCells(gameState) + '\n'));
+};
 
 const startPatterns = {
     rpentomino: [
